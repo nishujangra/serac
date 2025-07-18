@@ -10,15 +10,8 @@ mod models;
 use crate::routes::user_routes::{get_user};
 use crate::routes::auth_routes::{login};
 
-
 #[get("/")]
-// fn index() -> (Status, (ContentType, &'static str)) {
 fn index() -> Template {
-    // (Status::ImATeapot, (ContentType::JSON, "{ 
-    //     \"status\": \"200\",
-    //     \"msg\": \"SERAC backend initialized]\" 
-    // }"))
-
     Template::render("index", context!{
         username: "Nishujangra 27"
     })
