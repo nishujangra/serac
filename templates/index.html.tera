@@ -1,0 +1,137 @@
+{% extends "base" %}
+
+{% block title %}Serac - RBAC Access Control System{% endblock title %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Hero Section -->
+    <div class="text-center mb-16">
+        <div class="mb-8">
+            <div class="w-20 h-20 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                </svg>
+            </div>
+            <h1 class="text-5xl font-bold text-white mb-4">Serac</h1>
+            <p class="text-xl text-gray-300 mb-6">Role-Based Access Control System</p>
+            <p class="text-lg text-gray-400 max-w-3xl mx-auto">
+                A Rust-native RBAC dashboard for managing fine-grained, privilege-based access with speed, security, and clarity.
+            </p>
+        </div>
+        
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="/auth/login" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-medium transition-colors duration-200">
+                Get Started
+            </a>
+            <a href="https://github.com/nishujangra/serac" class="bg-gray-700 hover:bg-gray-600 text-white px-8 py-3 rounded-lg font-medium transition-colors duration-200">
+                View on GitHub
+            </a>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="mb-16">
+        <h2 class="text-3xl font-bold text-white text-center mb-12">Why Choose Serac?</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="bg-gray-800 rounded-lg p-6 border border-gray-700">
+                <div class="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center mb-4">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-semibold text-white mb-2">Lightning Fast</h3>
+                <p class="text-gray-400">Built with Rust and Rocket for exceptional performance and reliability.</p>
+            </div>
+            
+            <div class="bg-gray-800 rounded-lg p-6 border border-gray-700">
+                <div class="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center mb-4">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-semibold text-white mb-2">Secure by Design</h3>
+                <p class="text-gray-400">Memory-safe, thread-safe, and built with security best practices from the ground up.</p>
+            </div>
+            
+            <div class="bg-gray-800 rounded-lg p-6 border border-gray-700">
+                <div class="w-12 h-12 bg-purple-500 rounded-lg flex items-center justify-center mb-4">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-semibold text-white mb-2">Fine-Grained Control</h3>
+                <p class="text-gray-400">Manage users, roles, and privileges with precise, auditable access control.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- What is Serac Section -->
+    <div class="mb-16">
+        <div class="bg-gray-800 rounded-lg p-8 border border-gray-700">
+            <h2 class="text-2xl font-bold text-white mb-6">What is Serac?</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div>
+                    <p class="text-gray-300 mb-4">
+                        Serac is a comprehensive Role-Based Access Control (RBAC) system designed to provide secure, 
+                        scalable user management for modern applications. Built with Rust for performance and reliability, 
+                        it offers a clean, intuitive interface for managing complex permission structures.
+                    </p>
+                    <p class="text-gray-300 mb-4">
+                        Whether you're building a small application or managing enterprise-level access control, 
+                        Serac provides the tools you need to implement robust security policies with ease.
+                    </p>
+                    <div class="flex items-center space-x-4 text-sm text-gray-400">
+                        <span>• PostgreSQL Database</span>
+                        <span>• RESTful API</span>
+                        <span>• JWT Authentication</span>
+                    </div>
+                </div>
+                <div class="bg-gray-900 rounded-lg p-6">
+                    <h3 class="text-lg font-semibold text-white mb-4">Key Capabilities</h3>
+                    <ul class="space-y-3 text-gray-300">
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            User and role management
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            Privilege-based access control
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            Audit logging and monitoring
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            RESTful API integration
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            Modern web dashboard
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Call to Action -->
+    <div class="text-center">
+        <h2 class="text-2xl font-bold text-white mb-4">Ready to get started?</h2>
+        <p class="text-gray-400 mb-6">Join the growing number of developers using Serac for secure access control.</p>
+        <a href="/auth/login" class="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white px-8 py-3 rounded-lg font-medium transition-all duration-200 inline-block">
+            Start Managing Access Control
+        </a>
+    </div>
+</div>
+{% endblock content %}
