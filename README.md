@@ -204,7 +204,15 @@ The system supports the following startup-focused roles:
 
 ## 📜 License
 
-MIT
+GPLv3 - See [LICENSE.md](LICENSE.md) for full details.
+
+This project is licensed under the GNU General Public License v3.0, which means:
+- ✅ You can use, modify, and distribute this software
+- ✅ You must share any modifications under the same license
+- ✅ You must provide source code when distributing
+- 🔒 Any derivative works must also be open source
+
+For more information about GPLv3, visit: https://www.gnu.org/licenses/gpl-3.0.html
 
 ---
 

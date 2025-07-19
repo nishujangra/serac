@@ -2,6 +2,9 @@
 name = "serac"
 version = "0.1.0"
 edition = "2024"
+license = "GPL-3.0-or-later"
+description = "Rust-native Role-Based Access Control system with Rocket and PostgreSQL"
+repository = "https://github.com/nishujangra/serac"
 
 [dependencies]
 rocket = { version = "0.5.1", features = ["json"] }
