@@ -1,14 +1,11 @@
 #[macro_use] extern crate rocket;
 
-use rocket::http::{Status, ContentType};
+use rocket::fs::FileServer;
 use rocket_dyn_templates::{Template, context};
 
 
-mod routes;
-mod models;
-
-use crate::routes::user_routes::{get_user};
-use crate::routes::auth_routes::{login};
+pub mod routes;
+pub mod models;
 
 #[get("/")]
 fn index() -> Template {
@@ -21,6 +18,7 @@ fn index() -> Template {
 fn rocket() -> _ {
     rocket::build()
         .attach(Template::fairing())
+        .mount("/static", FileServer::from("static"))
         .mount("/", routes![index])
         .mount("/auth", routes::auth_routes())
         .mount("/", routes::user_routes())

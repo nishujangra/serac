@@ -1,5 +1,5 @@
 use chrono::{DateTime, Utc};
-use rocket::serde::Serialize;
+use rocket::serde::{Serialize, Deserialize};
 
 pub struct User {
     user_id: String,
@@ -14,7 +14,7 @@ pub struct User {
     updated_at: DateTime<Utc>,
 }
 
-#[derive(Serialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct UserLogin {
     pub username: String,
     pub email: String,
