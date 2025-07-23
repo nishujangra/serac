@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Register - Serac</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 <body class="bg-gray-900 text-white">
 
@@ -12,7 +12,7 @@
     <div class="w-full max-w-3xl bg-gray-800 rounded-xl border border-gray-700 shadow-lg grid grid-cols-1 lg:grid-cols-2 overflow-hidden">
       
       <!-- Left Panel -->
-      <div class="hidden lg:flex flex-col justify-center items-center bg-blue-800 p-6">
+      <div class="hidden lg:flex flex-col justify-center items-center bg-cyan-700 p-6">
         <div class="text-center flex flex-col justify-center items-center">
           <img src="/static/images/favicon.png" alt="Logo" class="w-32 h-32 rounded-xl mb-4" />
           <h2 class="text-2xl font-bold text-white mb-1">Join Serac</h2>
