@@ -9,13 +9,15 @@ pub fn login_page() -> Template {
     Template::render("auth/login", context!{})
 }
 
-#[post("/login", format= "json", data = "<user>")]
-pub fn login(user: Json<UserLogin>, db: &State<PgPool>) -> Result<Redirect, Status> {
-    format!("print test user {:?}", user.0)
-}
+// #[post("/login", format= "json", data = "<user>")]
+// pub fn login(user: Json<UserLogin>, db: &State<PgPool>) -> Result<Redirect, Status> {
+//     format!("print test user {:?}", user.0)
+// }
 
-// #[get("/register")]
-// pub fn register_page()
+#[get("/register")]
+pub fn register_page() -> Template {
+    Template::render("auth/register", context!{})
+}
 
 
 // #[post("/register")]
