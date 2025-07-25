@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/static/images/favicon.ico" type="image/x-icon">
   <title>Register - Serac</title>
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
@@ -12,7 +13,7 @@
     <div class="w-full max-w-3xl bg-gray-800 rounded-xl border border-gray-700 shadow-lg grid grid-cols-1 lg:grid-cols-2 overflow-hidden">
       
       <!-- Left Panel -->
-      <div class="hidden lg:flex flex-col justify-center items-center bg-cyan-700 p-6">
+      <div class="hidden lg:flex flex-col justify-center items-center bg-sky-900 p-6">
         <div class="text-center flex flex-col justify-center items-center">
           <img src="/static/images/favicon.png" alt="Logo" class="w-32 h-32 rounded-xl mb-4" />
           <h2 class="text-2xl font-bold text-white mb-1">Join Serac</h2>
@@ -69,7 +70,7 @@
             <label for="role" class="block text-sm text-gray-300 mb-1">Role</label>
             <select id="role" name="role" required
               class="w-full px-3 py-2 bg-gray-900 border border-gray-700 text-white rounded-md focus:ring-2 focus:ring-blue-500">
-              <option value="">Select role</option>
+              <option disabled selected>Select role</option>
               <option value="admin">Admin</option>
               <option value="moderator">Moderator</option>
               <option value="viewer">Viewer</option>

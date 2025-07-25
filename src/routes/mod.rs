@@ -6,9 +6,9 @@ use rocket::Route;
 pub fn auth_routes() -> Vec<Route> {
     routes![
         auth_routes::login_page,
-        // auth_routes::login,
-        auth_routes::register_page
-        // auth_routes::register
+        auth_routes::login,
+        auth_routes::register_page,
+        auth_routes::register
     ]
 }
 

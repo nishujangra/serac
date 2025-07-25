@@ -21,14 +21,15 @@ pub struct UserLogin {
     pub password: String,
 }
 
+#[derive(Deserialize)]
 pub struct UserRegister {
-    username: String,
-    email: String,
-    password: String,
-    confirm_password: String,
-    first_name: String,
-    last_name: String,
-    role: String,
+    pub username: String,
+    pub email: String,
+    pub password: String,
+    pub confirm_password: String,
+    pub first_name: String,
+    pub last_name: String,
+    pub role: String,
 }
 
 
