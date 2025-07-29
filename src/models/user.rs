@@ -1,17 +1,18 @@
 use chrono::{DateTime, Utc};
 use rocket::serde::{Serialize, Deserialize};
 
+#[derive(Deserialize)]
 pub struct User {
-    user_id: String,
-    username: String,
-    email: String,
-    password_hash: String,
-    first_name: String,
-    last_name: String,
-    is_active: bool,
-    role: String,
-    create_at: DateTime<Utc>,
-    updated_at: DateTime<Utc>,
+    pub user_id: String,
+    pub username: String,
+    pub email: String,
+    pub password_hash: String,
+    pub first_name: String,
+    pub last_name: String,
+    pub is_active: bool,
+    pub role: String,
+    pub create_at: DateTime<Utc>,
+    pub updated_at: DateTime<Utc>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
