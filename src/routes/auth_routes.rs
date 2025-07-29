@@ -4,6 +4,10 @@ use crate::models::user::{UserLogin, UserRegister, User};
 use rocket::State;
 use rocket::http::Status;
 
+use chrono::{Utc};
+
+use uuid::Uuid;
+
 use argon2::{
     password_hash:: {
         rand_core::OsRng,
@@ -24,6 +28,11 @@ pub fn login_page() -> Template {
 #[post("/login", format="application/json", data="<user>")]
 pub fn login(user: Json<UserLogin>) -> Result<Json<Value>, Status> {
     let user = user.into_inner();
+
+    Ok(Json(json!({
+        "username": user.username,
+        "password": user.password
+    })))
 }
 
 #[get("/register")]
@@ -32,7 +41,7 @@ pub fn register_page() -> Template {
 }
 
 #[post("/register", format="application/json", data="<user>")]
-pub async fn register(user: Json<UserRegister> ) -> Result<Json<Value>, Status> {
+pub async fn register(user: Json<UserRegister> ) -> Result<Json<User>, Status> {
     let user = user.into_inner();
 
     // Validate Email Address
@@ -62,14 +71,20 @@ pub async fn register(user: Json<UserRegister> ) -> Result<Json<Value>, Status> 
         Err(_) => return Err(Status::InternalServerError),
     };
 
-    Ok(Json(json!({
-        "message": format!("User {} registered successfully", user.username),
-        "user": {
-            "username": user.username,
-            "email": user.email,
-            "first_name": user.first_name,
-            "last_name": user.last_name,
-            "role": user.role
-        }
-    })))
+    let now = Utc::now();
+
+    let new_user = User {
+        user_id: Uuid::new_v4().to_string(),
+        username: user.username,
+        email: user.email,
+        password_hash,
+        first_name: user.first_name,
+        last_name: user.last_name,
+        is_active: true,
+        role: user.role,
+        created_at: now,
+        updated_at: now
+    };
+
+    Ok(Json(new_user))
 }

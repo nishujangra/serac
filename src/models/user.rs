@@ -1,7 +1,7 @@
 use chrono::{DateTime, Utc};
 use rocket::serde::{Serialize, Deserialize};
 
-#[derive(Deserialize)]
+#[derive(Serialize, Deserialize)]
 pub struct User {
     pub user_id: String,
     pub username: String,
@@ -11,7 +11,7 @@ pub struct User {
     pub last_name: String,
     pub is_active: bool,
     pub role: String,
-    pub create_at: DateTime<Utc>,
+    pub created_at: DateTime<Utc>,
     pub updated_at: DateTime<Utc>,
 }
 
