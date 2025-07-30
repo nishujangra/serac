@@ -7,6 +7,7 @@ use rocket_dyn_templates::{Template, context};
 pub mod routes;
 pub mod models;
 pub mod config;
+pub mod utils;
 
 use config::db::Config;
 use config::db::init_db;

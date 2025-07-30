@@ -1,8 +1,10 @@
+use crate::models::user::{UserLogin, UserRegister, User};
+use crate::utils::jwt::{generate_token};
 
 use rocket::serde::json::{Json, json, Value};
-use crate::models::user::{UserLogin, UserRegister, User};
 use rocket::State;
 use rocket::http::Status;
+
 
 use chrono::{Utc};
 
@@ -41,7 +43,7 @@ pub fn register_page() -> Template {
 }
 
 #[post("/register", format="application/json", data="<user>")]
-pub async fn register(user: Json<UserRegister> ) -> Result<Json<User>, Status> {
+pub async fn register(user: Json<UserRegister> ) -> Result<Json<Value>, Status> {
     let user = user.into_inner();
 
     // Validate Email Address
@@ -69,8 +71,8 @@ pub async fn register(user: Json<UserRegister> ) -> Result<Json<User>, Status> {
     let password_hash = match argon2.hash_password(user.password.as_bytes(), &salt) {
         Ok(hash) => hash.to_string(),
         Err(_) => return Err(Status::InternalServerError),
-    };
-
+    };    
+    
     let now = Utc::now();
 
     let new_user = User {
@@ -86,5 +88,24 @@ pub async fn register(user: Json<UserRegister> ) -> Result<Json<User>, Status> {
         updated_at: now
     };
 
-    Ok(Json(new_user))
+    // Generate JSON web token
+    let token = match generate_token(new_user.user_id.clone(), new_user.role.clone()) {
+        Ok(t) => t,
+        Err(_) => return Err(Status::InternalServerError),
+    };
+    
+    Ok(Json(json!({
+        "message": "User registered successfully",
+        "token": token,
+        "user": {
+            "user_id": new_user.user_id,
+            "username": new_user.username,
+            "email": new_user.email,
+            "first_name": new_user.first_name,
+            "last_name": new_user.last_name,
+            "role": new_user.role,
+            "created_at": new_user.created_at,
+            "updated_at": new_user.updated_at
+        }
+    })))
 }
