@@ -1,6 +1,6 @@
 # Serac
 
-**Serac** is a Rust-native RBAC (Role-Based Access Control) system built with Rocket framework for managing fine-grained, privilege-based access with **speed**, **security**, and **clarity**. Designed specifically for startup internal operations and team management.
+**Serac** is a Rust-native RBAC (Role-Based Access Control) system built with Rocket framework for managing fine-grained, privilege-based access with **speed**, **security**, and **clarity**. 
 
 > 🎯 **Showcase Project**: This is built as a comprehensive demonstration of RBAC dashboard capabilities, showcasing how modern access control systems can be implemented with Rust for startup environments.
 
@@ -33,11 +33,6 @@ This project is ideal for:
 - 🔐 **User authentication** and role-based access control
 - 📦 **RESTful API** endpoints for user and auth management
 - 📜 Human-readable access rules, ideal for audits and versioning
-- 🏢 **Startup-focused modules**: Projects, Billing, Tickets, Logs
-- 👥 **Team management** with department organization
-- 🔑 **API key management** for project integrations
-- 📊 **Audit logging** for compliance and security
-- 💰 **Billing management** for subscription tracking
 
 ---
 
@@ -88,43 +83,6 @@ The system uses a comprehensive PostgreSQL schema with the following core compon
 - **Users**: User accounts with role assignments and department tracking
 - **Applications**: Application registry for privilege organization
 
-### **Startup Operational Tables:**
-- **Projects**: Internal project management with status, priority, and budget tracking
-- **ProjectApiKeys**: API key management for project integrations
-- **Tickets**: Support ticket management system with customer tracking
-- **TicketComments**: Comments and updates on support tickets
-- **Billing**: Subscription and billing management with payment tracking
-- **SystemLogs**: Application and system logs for monitoring
-- **AuditLogs**: Security and compliance audit logs
-
----
-
-## 🏢 Startup Dashboard Modules
-
-### **Project Management**
-- Track internal projects with status, priority, and budget
-- Manage project ownership and team assignments
-- API key management for project integrations
-- Project lifecycle management (Active, Paused, Completed, Cancelled)
-
-### **Support System**
-- Customer support ticket management
-- Ticket categorization and priority levels
-- Internal and external comment system
-- Assignment and resolution tracking
-
-### **Billing & Finance**
-- Subscription and one-time payment tracking
-- Customer billing management
-- Payment status monitoring
-- Invoice URL storage and management
-
-### **Logging & Monitoring**
-- System logs for application monitoring
-- Security audit logs for compliance
-- IP address and user agent tracking
-- Request tracing for debugging
-
 ---
 
 ## 🛠️ Getting Started
@@ -134,6 +92,43 @@ The system uses a comprehensive PostgreSQL schema with the following core compon
 - Rust (stable)
 - PostgreSQL database
 - Cargo package manager
+
+### Configuration
+
+Serac uses a configuration system with both JSON and environment variables:
+
+#### 1. Database Configuration (`config.json`)
+
+Create a `config.json` file in the project root:
+
+```json
+{
+    "pg_database": {
+        "host": "localhost",
+        "port": "5432",
+        "user": "postgres",
+        "db": "serac"
+    }
+}
+```
+
+#### 2. Environment Variables (`.env`)
+
+Create a `.env` file for sensitive configuration:
+
+```bash
+# Psql Database password for db
+PG_PASSWORD=root
+
+# JWT SECRET
+JWT_SECRET='serac-secret-key'
+```
+
+#### 3. Configuration Priority
+
+1. Environment variables (highest priority)
+2. `config.json` file
+3. Default values (lowest priority)
 
 ### Setup
 
@@ -155,7 +150,14 @@ psql -d serac -f database.sql
 psql -d serac -f seed.sql
 ```
 
-3. **Run the application**
+3. **Configure the application**
+```bash
+# Edit with your database credentials
+nano config.json
+nano .env
+```
+
+4. **Run the application**
 ```bash
 cargo run
 ```
@@ -164,34 +166,24 @@ The server will start on `http://localhost:8000`
 
 ---
 
-## 🔌 API Endpoints
+## 📚 Documentation
 
-### Core Endpoints
-- `GET /` - Health check and status
-- `GET /api/user` - Get user information
-- `GET /auth/login` - Login endpoint
-
-### Planned Endpoints
-- `GET /api/projects` - Project management
-- `GET /api/tickets` - Support ticket system
-- `GET /api/billing` - Billing management
-- `GET /api/logs` - System and audit logs
-
-### Response Format
-All endpoints return JSON responses with appropriate HTTP status codes.
+- **[Authentication API](docs/auth.md)** - Complete authentication endpoints documentation
+- **[Database Schema](database.sql)** - PostgreSQL schema with RBAC + operational tables
+- **[Sample Data](seed.sql)** - Example data and useful database views
 
 ---
 
-## 👥 Team Roles
+## 🔌 API Endpoints
 
-The system supports the following startup-focused roles:
+### Authentication Endpoints
+- `POST /auth/register` - Register new user
+- `POST /auth/login` - User login
+- `POST /auth/logout` - User logout
+- `POST /auth/refresh` - Refresh access token
 
-- **ADMIN** (100): Full access to all system modules
-- **DEVELOPER** (80): Can manage projects, API keys, and logs
-- **SUPPORT_AGENT** (60): Can access user data and tickets
-- **ANALYST** (40): Read-only access to logs and dashboards
-- **FINANCE** (30): Billing access without dev/log access
-- **GUEST** (10): Minimal dashboard access
+### Response Format
+All endpoints return JSON responses with appropriate HTTP status codes.
 
 ---
 
@@ -228,15 +220,9 @@ A **serac** is a sharp, unstable glacial formation — a metaphor for the delica
 * [x] PostgreSQL RBAC schema
 * [x] User and auth route structure
 * [x] Core data models
-* [ ] Startup operational tables (Projects, Tickets, Billing, Logs)
-* [ ] Team management with departments
-* [ ] API key management system
-* [ ] Audit logging framework
-* [ ] Database connection and ORM integration
-* [ ] JWT authentication implementation
+* [x] JWT authentication implementation
 * [ ] Role-based middleware
 * [ ] Web-based dashboard UI
-* [ ] API token support
 * [ ] Rule versioning + audit logs
 * [ ] Docker deployment
 * [ ] OAuth integration
