@@ -19,10 +19,14 @@
             <p class="mt-2 text-sm text-gray-400">Secure access for role-based systems</p>
         </div>
 
-        <form action="/auth/login" method="post" class="space-y-6">
+        <!-- Error and Success Message Containers -->
+        <div id="errorContainer" class="hidden bg-red-500 text-white p-3 rounded-md mb-4 text-sm"></div>
+        <div id="successContainer" class="hidden bg-green-500 text-white p-3 rounded-md mb-4 text-sm"></div>
+
+        <form id="loginForm" action="/auth/login" method="post" class="space-y-6">
             <div>
-                <label for="email" class="block text-sm font-medium text-gray-300">Email address</label>
-                <input id="email" name="email" type="email" required autofocus
+                <label for="username" class="block text-sm font-medium text-gray-300">Username</label>
+                <input id="username" name="username" type="text" required autofocus
                     class="mt-1 block w-full px-4 py-2 bg-gray-900 border border-gray-700 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
             </div>
 
@@ -57,5 +61,9 @@
             <a href="/auth/register" class="text-blue-500 hover:text-blue-400 font-medium">Sign up</a>
         </p>
     </div>
+
+    <!-- JavaScript -->
+    <script src="/static/js/auth/utils.js"></script>
+    <script src="/static/js/auth/login.js"></script>
 </body>
 </html>

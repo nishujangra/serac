@@ -25,7 +25,11 @@
       <div class="p-6 sm:p-8 max-h-screen overflow-y-auto">
         <h2 class="text-xl font-bold mb-4">Register Your Account</h2>
 
-        <form action="/auth/register" method="post" class="space-y-4">
+        <!-- Error and Success Message Containers -->
+        <div id="errorContainer" class="hidden bg-red-500 text-white p-3 rounded-md mb-4 text-sm"></div>
+        <div id="successContainer" class="hidden bg-green-500 text-white p-3 rounded-md mb-4 text-sm"></div>
+
+        <form id="registerForm" action="/auth/register" method="post" class="space-y-4">
           <div>
             <label for="username" class="block text-sm text-gray-300 mb-1">Username</label>
             <input id="username" name="username" type="text" required
@@ -71,9 +75,9 @@
             <select id="role" name="role" required
               class="w-full px-3 py-2 bg-gray-900 border border-gray-700 text-white rounded-md focus:ring-2 focus:ring-blue-500">
               <option disabled selected>Select role</option>
-              <option value="admin">Admin</option>
-              <option value="moderator">Moderator</option>
-              <option value="viewer">Viewer</option>
+              <option value="ADMIN">Admin</option>
+              <option value="DEVELOPER">Developer</option>
+              <option value="GUEST">Guest</option>
             </select>
           </div>
 
@@ -93,5 +97,8 @@
     </div>
   </div>
 
+  <!-- JavaScript -->
+  <script src="/static/js/auth/utils.js"></script>
+  <script src="/static/js/auth/register.js"></script>
 </body>
 </html>
