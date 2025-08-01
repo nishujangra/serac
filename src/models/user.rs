@@ -1,4 +1,3 @@
-use chrono::{DateTime, Utc};
 use rocket::serde::{Serialize, Deserialize};
 
 #[derive(Serialize, Deserialize)]
@@ -11,8 +10,9 @@ pub struct User {
     pub last_name: String,
     pub is_active: bool,
     pub role: String,
-    pub created_at: DateTime<Utc>,
-    pub updated_at: DateTime<Utc>,
+    pub department: Option<String>,
+    pub created_at: i32,
+    pub updated_at: i32,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
