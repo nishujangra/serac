@@ -39,6 +39,7 @@ impl Config {
 
 pub async fn init_db(config: &Config) -> PgPool {
     let db_url = config.to_database_url();
+
     PgPool::connect(&db_url)
         .await
         .expect("Failed to connect to DB")
