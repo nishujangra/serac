@@ -13,12 +13,12 @@ use uuid::Uuid;
 use argon2::{
     password_hash:: {
         rand_core::OsRng,
-        PasswordHash, PasswordHasher, PasswordVerifier, SaltString
+        PasswordHasher, SaltString
     },
     Argon2
 };
 
-// use sqlx::PgPool;
+use sqlx::PgPool;
 
 use rocket_dyn_templates::{Template, context};
 
@@ -43,7 +43,7 @@ pub fn register_page() -> Template {
 }
 
 #[post("/register", format="application/json", data="<user>")]
-pub async fn register(user: Json<UserRegister> ) -> Result<Json<Value>, Status> {
+pub async fn register(user: Json<UserRegister>, db: &State<PgPool>) -> Result<Json<Value>, Status> {
     let user = user.into_inner();
 
     // Validate Email Address
@@ -61,6 +61,20 @@ pub async fn register(user: Json<UserRegister> ) -> Result<Json<Value>, Status> 
         return Err(Status::BadRequest);
     }
 
+    // Check into DB for User
+    let user_exists = sqlx::query_scalar!(
+        "SELECT EXISTS(SELECT 1 FROM users WHERE username = $1)",
+        user.username
+    )
+    .fetch_one(&**db)
+    .await
+    .unwrap_or(Some(false)) // If DB fails, assume username doesn't exist
+    .unwrap_or(false);
+    
+    if user_exists {
+        return Err(Status::Conflict); // HTTP 409
+    }
+
     // Generate Salt
     let salt = SaltString::generate(&mut OsRng);
 
@@ -73,7 +87,7 @@ pub async fn register(user: Json<UserRegister> ) -> Result<Json<Value>, Status> 
         Err(_) => return Err(Status::InternalServerError),
     };    
     
-    let now = Utc::now();
+    let now_epooch: i32 = Utc::now().timestamp() as i32;
 
     let new_user = User {
         user_id: Uuid::new_v4().to_string(),
@@ -84,8 +98,9 @@ pub async fn register(user: Json<UserRegister> ) -> Result<Json<Value>, Status> 
         last_name: user.last_name,
         is_active: true,
         role: user.role,
-        created_at: now,
-        updated_at: now
+        department: None, // Default to None for now
+        created_at: now_epooch,
+        updated_at: now_epooch
     };
 
     // Generate JSON web token
@@ -93,6 +108,29 @@ pub async fn register(user: Json<UserRegister> ) -> Result<Json<Value>, Status> 
         Ok(t) => t,
         Err(_) => return Err(Status::InternalServerError),
     };
+
+    // add user into DB
+    sqlx::query!(
+        "INSERT INTO users (
+            user_id, username, email, password_hash, first_name, last_name, is_active, role, department, created_at, updated_at
+        ) VALUES (
+            $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11
+        )",
+        new_user.user_id,
+        new_user.username,
+        new_user.email,
+        new_user.password_hash,
+        new_user.first_name,
+        new_user.last_name,
+        new_user.is_active,
+        new_user.role,
+        new_user.department.as_deref(),
+        new_user.created_at,
+        new_user.updated_at
+    )
+    .execute(&**db)
+    .await
+    .unwrap();
     
     Ok(Json(json!({
         "message": "User registered successfully",
