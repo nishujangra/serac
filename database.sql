@@ -97,7 +97,7 @@ COMMENT ON COLUMN Access.role IS 'Role identifier';
 
 -- Users table: Stores team member information
 CREATE TABLE Users (
-    user_id         UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    user_id         TEXT PRIMARY KEY,
     username        VARCHAR(50) UNIQUE NOT NULL,
     email           VARCHAR(255) UNIQUE NOT NULL,
     password_hash   VARCHAR(255) NOT NULL,
@@ -106,8 +106,8 @@ CREATE TABLE Users (
     is_active       BOOLEAN DEFAULT TRUE,
     role            CHAR(20) REFERENCES Roles ON UPDATE CASCADE,
     department      VARCHAR(100), -- e.g., 'Engineering', 'Support', 'Finance'
-    created_at      TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    updated_at      TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    created_at      INT,
+    updated_at      INT
 );
 
 -- Add comment to Users table
@@ -126,8 +126,8 @@ CREATE TABLE Applications (
     description     TEXT,
     version         VARCHAR(20),
     is_active       BOOLEAN DEFAULT TRUE,
-    created_at      TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    updated_at      TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    created_at      INT,
+    updated_at      INT
 );
 
 -- Add comment to Applications table
