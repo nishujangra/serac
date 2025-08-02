@@ -9,7 +9,6 @@ pub mod models;
 pub mod config;
 pub mod utils;
 
-use config::db::Config;
 use config::db::init_db;
 
 #[get("/")]
@@ -22,9 +21,7 @@ fn index() -> Template {
 #[rocket::main]
 async fn main() -> Result<(), rocket::Error> {
     dotenvy::dotenv().ok(); // load from .env
-
-    let app_config = Config::from_file("config.json");
-    let db_pool = init_db(&app_config).await;
+    let db_pool = init_db().await;
 
     rocket::build()
         .manage(db_pool)
