@@ -1,0 +1,3 @@
+# Mark static frontend files as vendored (excluded from language stats)
+templates/* linguist-language=HTML
+*.tera linguist-language=HTML

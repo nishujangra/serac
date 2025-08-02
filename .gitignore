@@ -102,3 +102,10 @@ flake.lock
 
 # Environment variables
 .env
+
+# IDE Files
+.vscode/
+.sentry-native/
+
+# Sqlx 
+.sqlx/
