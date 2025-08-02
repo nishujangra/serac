@@ -2,7 +2,7 @@
 
 **Serac** is a Rust-native RBAC (Role-Based Access Control) system built with Rocket framework for managing fine-grained, privilege-based access with **speed**, **security**, and **clarity**. 
 
-> 🎯 **Showcase Project**: This is built as a comprehensive demonstration of RBAC dashboard capabilities, showcasing how modern access control systems can be implemented with Rust for startup environments.
+> 🎯 **Showcase Project**: This is built as a comprehensive demonstration of RBAC dashboard capabilities, showcasing how modern access control systems can be implemented with Rust for startup environments with a beautiful, responsive frontend.
 
 ---
 
@@ -32,17 +32,23 @@ This project is ideal for:
 - 🗄️ **PostgreSQL** database with comprehensive RBAC schema
 - 🔐 **User authentication** and role-based access control
 - 📦 **RESTful API** endpoints for user and auth management
+- 🎨 **Beautiful, responsive frontend** with Tailwind CSS
+- 🔒 **Secure password hashing** with Argon2
+- 🎯 **Real-time form validation** with JavaScript
+- 📱 **Mobile-responsive design** for all devices
 - 📜 Human-readable access rules, ideal for audits and versioning
 
 ---
 
 ## 📦 Tech Stack
 
-- **Backend**: Rust (Rocket 0.5.1, Serde, Chrono)
+- **Backend**: Rust (Rocket 0.5.1, Serde, Chrono, SQLx)
 - **Database**: PostgreSQL with comprehensive RBAC schema
 - **API**: RESTful endpoints with JSON responses
-- **Authentication**: Role-based access control system
-- **Templates**: Tera templating engine with Tailwind CSS
+- **Authentication**: JWT tokens with Argon2 password hashing
+- **Frontend**: Tera templating engine with Tailwind CSS
+- **JavaScript**: Vanilla JS with modern ES6+ features
+- **Security**: Argon2 password hashing, JWT tokens, CSRF protection
 
 ---
 
@@ -52,20 +58,37 @@ This project is ideal for:
 serac/
 ├── src/
 │   ├── main.rs           # Rocket app entrypoint and route mounting
+│   ├── config/
+│   │   ├── mod.rs        # Configuration module exports
+│   │   └── db.rs         # Database configuration and connection
 │   ├── models/
 │   │   ├── mod.rs        # Model module exports
 │   │   └── user.rs       # User data structures and utilities
-│   └── routes/
-│       ├── mod.rs        # Route module exports
-│       ├── auth_routes.rs # Authentication endpoints
-│       └── user_routes.rs # User management endpoints
+│   ├── routes/
+│   │   ├── mod.rs        # Route module exports
+│   │   ├── auth_routes.rs # Authentication endpoints
+│   │   └── user_routes.rs # User management endpoints
+│   └── utils/
+│       ├── mod.rs        # Utility module exports
+│       └── jwt.rs        # JWT token generation and validation
+├── static/
+│   ├── images/           # Static images and favicon
+│   └── js/
+│       └── auth/         # Authentication JavaScript files
+│           ├── login.js  # Login form functionality
+│           ├── register.js # Registration form functionality
+│           └── utils.js  # Authentication utilities
+├── templates/
+│   ├── base.html.tera    # Base template
+│   ├── index.html.tera   # Landing page
+│   ├── auth/
+│   │   ├── login.html.tera    # Login page template
+│   │   └── register.html.tera # Registration page template
+│   └── _partials/        # Template partials
 ├── database.sql          # PostgreSQL schema with RBAC + operational tables
 ├── seed.sql             # Sample data and useful views
+├── config.json          # Database configuration
 ├── Cargo.toml           # Rust dependencies
-├── templates/           # Web interface templates
-│   ├── base.html.tera   # Base template
-│   ├── index.html.tera  # Landing page
-│   └── _partials/       # Template partials
 └── README.md
 ```
 
@@ -177,13 +200,14 @@ The server will start on `http://localhost:8000`
 ## 🔌 API Endpoints
 
 ### Authentication Endpoints
-- `POST /auth/register` - Register new user
-- `POST /auth/login` - User login
-- `POST /auth/logout` - User logout
-- `POST /auth/refresh` - Refresh access token
+- `GET /auth/login` - Login page
+- `POST /auth/login` - User login (JSON)
+- `GET /auth/register` - Registration page
+- `POST /auth/register` - Register new user (JSON)
+
 
 ### Response Format
-All endpoints return JSON responses with appropriate HTTP status codes.
+All API endpoints return JSON responses with appropriate HTTP status codes. Web pages return rendered HTML templates.
 
 ---
 
@@ -221,6 +245,10 @@ A **serac** is a sharp, unstable glacial formation — a metaphor for the delica
 * [x] User and auth route structure
 * [x] Core data models
 * [x] JWT authentication implementation
+* [x] Beautiful, responsive frontend with Tailwind CSS
+* [x] Real-time form validation with JavaScript
+* [x] Secure password hashing with Argon2
+* [x] User registration and login system
 * [ ] Role-based middleware
 * [ ] Web-based dashboard UI
 * [ ] Rule versioning + audit logs
@@ -238,6 +266,12 @@ A **serac** is a sharp, unstable glacial formation — a metaphor for the delica
 2. Add module to `src/routes/mod.rs`
 3. Mount in `src/main.rs`
 
+### Frontend Development
+1. Create templates in `templates/` directory
+2. Add JavaScript files in `static/js/` for interactivity
+3. Use Tailwind CSS classes for styling
+4. Follow the existing pattern for form validation and AJAX submissions
+
 ### Database Changes
 - Update `database.sql` for schema changes
 - Add migration scripts for production deployments
@@ -247,7 +281,14 @@ A **serac** is a sharp, unstable glacial formation — a metaphor for the delica
 2. Add corresponding indexes for performance
 3. Create model in `src/models/`
 4. Add routes in `src/routes/`
-5. Update privilege definitions in `seed.sql`
+5. Create frontend templates and JavaScript
+6. Update privilege definitions in `seed.sql`
+
+### JavaScript Development
+- Use vanilla JavaScript (no frameworks)
+- Follow functional programming approach
+- Implement real-time validation for forms
+- Use the AuthUtils for authentication functions
 
 ---
 
@@ -258,6 +299,32 @@ The system includes useful views for startup operations:
 - **`active_users_view`**: All active team members with roles and departments
 - **`role_privileges_view`**: Role hierarchy with privilege counts
 - **`application_privileges_view`**: Privileges organized by dashboard modules
+
+## 🎨 Frontend Features
+
+### Authentication System
+- **Responsive login/register forms** with real-time validation
+- **Password strength indicator** with visual feedback
+- **AJAX form submissions** for smooth user experience
+- **Error handling** with user-friendly messages
+- **Token-based authentication** with automatic redirects
+
+### Design System
+- **Modern, dark theme** with Tailwind CSS
+- **Mobile-first responsive design**
+- **Glass-morphism effects** with backdrop blur
+- **Smooth animations** and transitions
+- **Accessible form controls** with proper labels and focus states
+
+---
+
+## References
+
+- [Rocket Web Framework](https://rocket.rs/v0.5-rc/guide/)
+- [SQLx Async ORM](https://docs.rs/sqlx/)
+- [Argon2 password hashing](https://docs.rs/argon2/)
+- [dotenvy for env config](https://docs.rs/dotenvy/)
+- [Rust Docker Image](https://hub.docker.com/_/rust/)
 
 ---
 
