@@ -17,7 +17,6 @@ pub struct User {
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct UserLogin {
-    pub username: String,
     pub email: String,
     pub password: String,
 }
