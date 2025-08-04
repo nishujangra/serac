@@ -13,7 +13,7 @@ pub struct Claims {
 }
 
 pub fn generate_token(user_id: String, role: String) -> Result<String, jsonwebtoken::errors::Error> {
-    let JWT_SECRET = std::env::var("JWT_SECRET").expect("JWT_SECRET must be in .env");
+    let jwt_secret = std::env::var("JWT_SECRET").expect("JWT_SECRET must be in .env");
     let expiration = Utc::now()
         .checked_add_signed(Duration::hours(24))
         .expect("valid timestamp")
@@ -25,5 +25,5 @@ pub fn generate_token(user_id: String, role: String) -> Result<String, jsonwebto
         role,
     };
 
-    encode(&Header::default(), &claims, &EncodingKey::from_secret(JWT_SECRET.as_bytes()))
+    encode(&Header::default(), &claims, &EncodingKey::from_secret(jwt_secret.as_bytes()))
 }

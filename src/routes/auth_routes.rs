@@ -1,9 +1,9 @@
 use crate::models::user::{UserLogin, UserRegister, User};
 use crate::utils::jwt::{generate_token};
 
+use rocket::http::{Cookie, CookieJar, Status};
 use rocket::serde::json::{Json, json, Value};
 use rocket::State;
-use rocket::http::Status;
 
 
 use chrono::{Utc};
@@ -15,7 +15,9 @@ use argon2::{
         rand_core::OsRng,
         PasswordHasher, SaltString
     },
-    Argon2
+    Argon2,
+    PasswordVerifier,
+    PasswordHash
 };
 
 use sqlx::PgPool;
@@ -28,12 +30,53 @@ pub fn login_page() -> Template {
 }
 
 #[post("/login", format="application/json", data="<user>")]
-pub fn login(user: Json<UserLogin>) -> Result<Json<Value>, Status> {
+pub async fn login(user: Json<UserLogin>, db: &State<PgPool>) -> Result<Json<Value>, Status> {
     let user = user.into_inner();
 
+    // Basic validations
+    if !user.email.contains('@') || user.password.len() < 8 {
+        return Err(Status::BadRequest);
+    }
+
+    // If user exists or not
+    let user_exists = sqlx::query!(
+        "SELECT * FROM users WHERE email = $1",
+        user.email
+    )
+    .fetch_one(&**db)
+    .await
+    .map_err(|_| Status::Unauthorized)?;
+
+    // Check password correct or not
+    let db_hashed_password = user_exists.password_hash;
+    let parsed_hash = match PasswordHash::new(&db_hashed_password) {
+        Ok(hash) => hash,
+        Err(_) => return Err(Status::InternalServerError),
+    };
+
+    let verifier = Argon2::default();
+    if verifier.verify_password(user.password.as_bytes(), &parsed_hash).is_err() {
+        return Err(Status::Unauthorized);
+    }
+
+    // generate token
+    let token = match crate::utils::generate_token(row.user_id.clone(), row.role.clone()) {
+        Ok(t) => t,
+        Err(_) => return Err(Status::InternalServerError),
+    };
+
+    // save token to the cookie
+    cookies.add(
+        Cookie::build(("auth_token", token.clone()))
+            .path("/")
+            .http_only(true)
+            .finish()
+    );
+
     Ok(Json(json!({
-        "username": user.username,
-        "password": user.password
+        "email": user.email,
+        "password": user.password,
+        "token": token
     })))
 }
 
@@ -43,7 +86,11 @@ pub fn register_page() -> Template {
 }
 
 #[post("/register", format="application/json", data="<user>")]
-pub async fn register(user: Json<UserRegister>, db: &State<PgPool>) -> Result<Json<Value>, Status> {
+pub async fn register<'r>(
+    user: Json<UserRegister>, 
+    db: &State<PgPool>, 
+    cookies: &CookieJar<'r>
+) -> Result<Json<Value>, Status> {
     let user = user.into_inner();
 
     // Validate Email Address
@@ -87,7 +134,7 @@ pub async fn register(user: Json<UserRegister>, db: &State<PgPool>) -> Result<Js
         Err(_) => return Err(Status::InternalServerError),
     };    
     
-    let now_epooch: i32 = Utc::now().timestamp() as i32;
+    let now_epoch: i32 = Utc::now().timestamp() as i32;
 
     let new_user = User {
         user_id: Uuid::new_v4().to_string(),
@@ -99,8 +146,8 @@ pub async fn register(user: Json<UserRegister>, db: &State<PgPool>) -> Result<Js
         is_active: true,
         role: user.role,
         department: None, // Default to None for now
-        created_at: now_epooch,
-        updated_at: now_epooch
+        created_at: now_epoch,
+        updated_at: now_epoch
     };
 
     // Generate JSON web token
@@ -108,6 +155,14 @@ pub async fn register(user: Json<UserRegister>, db: &State<PgPool>) -> Result<Js
         Ok(t) => t,
         Err(_) => return Err(Status::InternalServerError),
     };
+
+    // Store in secure, HttpOnly cookie
+    cookies.add(
+        Cookie::build(("auth_token", token.clone()))
+            .path("/")
+            .http_only(true)
+            .finish()
+    );
 
     // add user into DB
     sqlx::query!(
