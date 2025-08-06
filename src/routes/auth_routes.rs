@@ -30,7 +30,11 @@ pub fn login_page() -> Template {
 }
 
 #[post("/login", format="application/json", data="<user>")]
-pub async fn login(user: Json<UserLogin>, db: &State<PgPool>) -> Result<Json<Value>, Status> {
+pub async fn login<'r>(
+    user: Json<UserLogin>, 
+    db: &State<PgPool>,
+    cookies: &CookieJar<'r>
+) -> Result<Json<Value>, Status> {
     let user = user.into_inner();
 
     // Basic validations
@@ -59,8 +63,10 @@ pub async fn login(user: Json<UserLogin>, db: &State<PgPool>) -> Result<Json<Val
         return Err(Status::Unauthorized);
     }
 
+    let user_role: String = user_exists.role.expect("role must be present");    
+
     // generate token
-    let token = match crate::utils::generate_token(row.user_id.clone(), row.role.clone()) {
+    let token = match generate_token(user_exists.user_id.clone(), user_role.clone()) {
         Ok(t) => t,
         Err(_) => return Err(Status::InternalServerError),
     };
