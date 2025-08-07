@@ -4,6 +4,8 @@
 
 > 🎯 **Showcase Project**: This is built as a comprehensive demonstration of RBAC dashboard capabilities, showcasing how modern access control systems can be implemented with Rust for startup environments with a beautiful, responsive frontend.
 
+Additionally, I have documented my experience and implementation of JWT authentication using RocketRS in my blog post: [Implementing JWT Authentication in RocketRS](https://nishujangra27.hashnode.dev/implementing-jwt-authentication-in-rocketrs). In it, I walk through the setup of JWT-based login, token generation, validation workflows, and integrating authorization with Rocket routes—offering practical insights into securing Serac and enhancing its access control logic.
+
 ---
 
 ## 🎯 Project Purpose
