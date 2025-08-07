@@ -1,5 +1,5 @@
 # Mark static frontend files as vendored (excluded from language stats)
-static/* linguist-vendored
+static/js/* linguist-vendored
 templates/* linguist-vendored
 
 # Optionally exclude SQL migrations if they're generated
