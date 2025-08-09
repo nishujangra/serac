@@ -14,6 +14,6 @@ pub fn auth_routes() -> Vec<Route> {
 
 pub fn user_routes() -> Vec<Route> {
     routes![
-        user_routes::get_user
+        user_routes::user_details
     ]
 }

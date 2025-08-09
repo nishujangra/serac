@@ -8,6 +8,8 @@ pub mod routes;
 pub mod models;
 pub mod config;
 pub mod utils;
+pub mod fairings;
+pub mod guards;
 
 use config::db::init_db;
 
@@ -29,7 +31,7 @@ async fn main() -> Result<(), rocket::Error> {
         .mount("/static", FileServer::from("static"))
         .mount("/", routes![index])
         .mount("/auth", routes::auth_routes())
-        .mount("/", routes::user_routes())
+        .mount("/user", routes::user_routes())
         .launch()
         .await?;
 
