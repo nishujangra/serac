@@ -10,6 +10,6 @@ pub fn user_details(user: AuthenticatedUser) -> Result<Json<Value>, Status> {
     Ok(Json(json!({
         "success": true,
         "user_id": user.0.user_id,
-        "role": user.0.role
+        "role": user.0.role.trim() // trim white-spaces
     })))
 }

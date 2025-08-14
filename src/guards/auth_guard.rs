@@ -21,30 +21,34 @@ pub struct AuthenticatedUser(pub Claims);
 impl<'r> FromRequest<'r> for AuthenticatedUser {
     type Error = ();
 
-    async fn from_request(req: &'r Request<'_>) -> Outcome<Self, Self::Error> {
-        let auth_header = req.headers().get_one("Authorization");
+    async fn from_request(
+        request: &'r Request<'_>,
+    ) -> Outcome<Self, Self::Error> {
+        // extract header
+        let auth_header = match request.headers().get_one("Authorization") {
+            Some(header) if !header.trim().is_empty() => header,
+            _ => return Outcome::Error((Status::Unauthorized, ()))
+        };
 
-        if auth_header.is_none() {
-            return Outcome::Error((Status::Unauthorized, ()));
-        }
+        // extract token, header must start with bearer
+        let token = auth_header.strip_prefix("Bearer ").unwrap().trim();
 
-        let token = auth_header.unwrap().trim_start_matches("Bearer ").trim();
-        let secret = std::env::var("JWT_SECRET").unwrap_or_else(|_| "iwt-secret".to_string());
+        // get jwt secret
+        let jwt_secret = std::env::var("JWT_SECRET").expect("JWT_SECRET must be set in .env");
 
-        match decode::<Claims>(
+        // decode jwt
+        let result = decode::<Claims>(
             token,
-            &DecodingKey::from_secret(secret.as_ref()),
-            &Validation::new(Algorithm::HS256),
-        ) {
-            Ok(token_data) => Outcome::Success(AuthenticatedUser(token_data.claims)),
-            Err(_) => Outcome::Error((Status::Unauthorized, ())),
-        }
-    }
-}
+            &DecodingKey::from_secret(jwt_secret.as_bytes()),
+            &Validation::new(Algorithm::HS256)
+        );
 
-// Optional role check helper
-impl AuthenticatedUser {
-    pub fn has_role(&self, role: &str) -> bool {
-        self.0.role == role
+        let claims = match result {
+            Ok(data) => data.claims,
+            Err(_) => return Outcome::Error((Status::Unauthorized, ())),
+        };
+
+        Outcome::Success(AuthenticatedUser(claims))
     }
+
 }
