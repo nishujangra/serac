@@ -30,8 +30,11 @@ impl<'r> FromRequest<'r> for AuthenticatedUser {
             _ => return Outcome::Error((Status::Unauthorized, ()))
         };
 
-        // extract token, header must start with bearer
-        let token = auth_header.strip_prefix("Bearer ").unwrap().trim();
+        // Expected format of header: `Bearer token`
+        let token = match auth_header.strip_prefix("Bearer ") {
+            Some(t) if !t.trim().is_empty() => t.trim(),
+            _ => return Outcome::Error((Status::Unauthorized, ())),
+        };
 
         // get jwt secret
         let jwt_secret = std::env::var("JWT_SECRET").expect("JWT_SECRET must be set in .env");
