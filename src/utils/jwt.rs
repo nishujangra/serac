@@ -7,9 +7,9 @@ use jsonwebtoken::{encode, EncodingKey, Header};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Claims {
-    pub id: String,         // user ID or username
-    pub exp: usize,          // expiry time (as timestamp)
+    pub user_id: String,         // user ID or username
     pub role: String,        // optional: include user role
+    pub exp: usize,          // expiry time (as timestamp)
 }
 
 pub fn generate_token(user_id: String, role: String) -> Result<String, jsonwebtoken::errors::Error> {
@@ -20,7 +20,7 @@ pub fn generate_token(user_id: String, role: String) -> Result<String, jsonwebto
         .timestamp() as usize;
 
     let claims = Claims {
-        id: user_id,
+        user_id: user_id,
         exp: expiration,
         role,
     };
