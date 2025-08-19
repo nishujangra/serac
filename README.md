@@ -4,7 +4,25 @@
 
 > 🎯 **Showcase Project**: This is built as a comprehensive demonstration of RBAC dashboard capabilities, showcasing how modern access control systems can be implemented with Rust for startup environments with a beautiful, responsive frontend.
 
-Additionally, I have documented my experience and implementation of JWT authentication using RocketRS in my blog post: [Implementing JWT Authentication in RocketRS](https://nishujangra27.hashnode.dev/implementing-jwt-authentication-in-rocketrs). In it, I walk through the setup of JWT-based login, token generation, validation workflows, and integrating authorization with Rocket routes—offering practical insights into securing Serac and enhancing its access control logic.
+## 📖 Related Blog Posts
+
+I've written comprehensive blog posts documenting the implementation of key features in Serac:
+
+### 🔐 [Implementing JWT Authentication in Rocket.rs with Argon2 Password Hashing](https://nishujangra27.hashnode.dev/implementing-jwt-authentication-in-rocketrs)
+A detailed walkthrough of implementing JWT-based authentication in Rocket.rs, covering:
+- JWT token generation and validation workflows
+- Argon2 password hashing for security
+- Integration with Rocket routes and authorization
+- Practical insights into securing Serac's access control logic
+
+### 🛡️ [Implementing Middleware in Rocket.rs](https://nishujangra27.hashnode.dev/implementing-middleware-in-rocketrs-rust)
+A comprehensive guide to building custom middleware in Rocket.rs, including:
+- Request guard implementation for authentication
+- JWT token validation middleware
+- Role-based access control patterns
+- Best practices for securing Rocket applications
+
+These blog posts provide practical insights and implementation details that complement the Serac project.
 
 ---
 
