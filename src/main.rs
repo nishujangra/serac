@@ -20,6 +20,11 @@ fn index() -> Template {
     })
 }
 
+#[get("/ping")]
+fn ping() -> &'static str {
+    "pong"
+}
+
 #[rocket::main]
 async fn main() -> Result<(), rocket::Error> {
     dotenvy::dotenv().ok(); // load from .env
@@ -28,8 +33,9 @@ async fn main() -> Result<(), rocket::Error> {
     rocket::build()
         .manage(db_pool)
         .attach(Template::fairing())
+        .attach(fairings::logger::Logger)
         .mount("/static", FileServer::from("static"))
-        .mount("/", routes![index])
+        .mount("/", routes![index, ping])
         .mount("/auth", routes::auth_routes())
         .mount("/user", routes::user_routes())
         .launch()
